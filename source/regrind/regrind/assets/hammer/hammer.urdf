@@ -1,0 +1,46 @@
+<?xml version="1.0" ?>
+<!-- Derived from source/dexrl/dexrl/assets/mjcf/hammer.xml.
+     Single free-floating rigid body; mesh paths are relative to this file. -->
+<robot name="hammer">
+   <material name="obj_color">
+      <color rgba="1.0 0.423529411765 0.0392156862745 1.0"/>
+   </material>
+   <material name="obj_bottom_color">
+      <color rgba="0.4 0.8 1.0 1.0"/>
+   </material>
+   <material name="obj_top_color">
+      <color rgba="1.0 0.6 1.0 1.0"/>
+   </material>
+   <link name="bottom">
+      <inertial>
+         <origin rpy="0 0 0" xyz="0.0 0.08 0.0"/>
+         <mass value="0.372"/>
+         <inertia ixx="2.3e-03" ixy="0.0" ixz="0.0" iyy="2.0e-04" iyz="0.0" izz="2.4e-03"/>
+      </inertial>
+      <visual>
+         <origin rpy="0 0 0" xyz="0 0 0"/>
+         <geometry>
+            <mesh filename="hammer_simplified/hammer_simplified.obj" scale="1 1 1"/>
+         </geometry>
+         <material name="obj_bottom_color"/>
+      </visual>
+      <collision>
+         <origin rpy="0 0 0" xyz="0 0 0"/>
+         <geometry>
+            <mesh filename="hammer_simplified/decomposed/hammer_simplified_000.obj" scale="1 1 1"/>
+         </geometry>
+      </collision>
+      <collision>
+         <origin rpy="0 0 0" xyz="0 0 0"/>
+         <geometry>
+            <mesh filename="hammer_simplified/decomposed/hammer_simplified_001.obj" scale="1 1 1"/>
+         </geometry>
+      </collision>
+      <collision>
+         <origin rpy="0 0 0" xyz="0 0 0"/>
+         <geometry>
+            <mesh filename="hammer_simplified/decomposed/hammer_simplified_002.obj" scale="1 1 1"/>
+         </geometry>
+      </collision>
+   </link>
+</robot>

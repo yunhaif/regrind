@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<!-- Rigid eraser for the Drake retargeter. Same inertial + box collision as eraser.xml;
+     the visual is the same box (the original textured mesh is ~110 MB and not shipped). -->
+<robot name="eraser">
+   <material name="obj_color">
+      <color rgba="1.0 0.423529411765 0.0392156862745 1.0"/>
+   </material>
+   <material name="obj_bottom_color">
+      <color rgba="0.4 0.8 1.0 1.0"/>
+   </material>
+   <link name="bottom">
+      <inertial>
+         <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+         <mass value="0.0126"/>
+         <inertia ixx="1.718e-05" ixy="0.0" ixz="0.0" iyy="3.390e-06" iyz="0.0" izz="1.882e-05"/>
+      </inertial>
+      <visual>
+         <origin rpy="0 0 0" xyz="0 0 0"/>
+         <geometry>
+            <box size="0.05 0.125 0.03"/>
+         </geometry>
+         <material name="obj_bottom_color"/>
+      </visual>
+      <collision>
+         <origin rpy="0 0 0" xyz="0 0 0"/>
+         <geometry>
+            <box size="0.05 0.125 0.03"/>
+         </geometry>
+      </collision>
+   </link>
+</robot>
