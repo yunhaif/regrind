@@ -59,11 +59,18 @@ def interp_quat_wxyz_slerp(quats_wxyz: np.ndarray, phi: float) -> np.ndarray:
 
 def reference_state_at_phi(raw: dict[str, np.ndarray], phi: float) -> dict[str, np.ndarray]:
     """Unaugmented retargeted reference at phase phi (linear index in raw trajectory)."""
+    if "robot_quat" in raw:
+        # Slerp the wrist orientation like MotionCommand does; linearly interpolating Euler angles breaks near
+        # gimbal lock (pitch ~ +-pi/2), where roll/yaw jump between neighbouring frames.
+        robot_quat = interp_quat_wxyz_slerp(raw["robot_quat"], phi)
+        robot_euler = R_scipy.from_quat(robot_quat, scalar_first=True).as_euler("XYZ", degrees=False)
+    else:
+        robot_euler = _interp_rows(raw["robot_euler_XYZ"], phi)
     return {
         "object_pos": _interp_rows(raw["object_pos"], phi),
         "object_quat": interp_quat_wxyz_slerp(raw["object_quat"], phi),
         "robot_pos": _interp_rows(raw["robot_pos"], phi),
-        "robot_euler_XYZ": _interp_rows(raw["robot_euler_XYZ"], phi),
+        "robot_euler_XYZ": robot_euler,
         "robot_joints": _interp_rows(raw["robot_joints"], phi),
     }
 
@@ -187,7 +194,6 @@ def compute_base_qpos_at_timestep(
     """Full motion base qpos [wrist_pos(3), wrist_euler_intrinsic_XYZ(3), finger joints]."""
     ref = reference_state_at_phi(raw, phi)
     w = traj_aug_weight(t_in_demo, start_step, use_step)
-    print("weight:", w)
     wrist_p, euler = augment_wrist_to_base(
         ref["object_pos"],
         ref["object_quat"],
