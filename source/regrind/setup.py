@@ -20,6 +20,18 @@ INSTALL_REQUIRES = [
 
 EXTRAS_REQUIRE = {
     "retargeting": ["drake"],
+    # Real-robot deployment (scripts/real_world); ROS 2 itself comes from conda (RoboStack), not pip.
+    "hardware": [
+        "torch",
+        "numpy",
+        "scipy>=1.14",  # Rotation.from_quat(..., scalar_first=True)
+        "h5py",
+        "pyyaml",
+        "ur-rtde",  # UR5e
+        "dynamixel-sdk",  # LEAP Hand (used by LEAP_Hand_API)
+        "viser",  # scripts/real_world/vis.py
+        "yourdfpy",
+    ],
 }
 
 # Installation operation

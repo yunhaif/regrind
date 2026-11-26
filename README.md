@@ -119,3 +119,21 @@ python scripts/rsl_rl/play.py --task [task] --headless --video
 Note that we should use the play environments (with the suffix `-Play-v0`). 
 Use `--checkpoint` to specify the checkpoint to evaluated. The latest checkpoint will be used if not specified.
 When evaluating an intermediate checkpoint, use `--auto_gravity_from_ckpt` to infer the corresponding gravity since we perform gravity curriculum.
+
+## Real-world deployment
+
+[scripts/real_world](scripts/real_world) contains a minimal ROS 2 deployment for a UR5e arm with a WUJI hand or a LEAP Hand.
+The policy's wrist SE(3) target is tracked by the UR controller with `servoL`, and the finger targets go to the hand driver in the same 30 Hz control step.
+The robot PC does not need Isaac Sim, only a [RoboStack](https://robostack.github.io/) ROS 2 env plus the `hardware` extra.
+Running `play.py` once exports the policy; then:
+
+```bash
+conda create -n regrind_hw -c conda-forge -c robostack-kilted ros-kilted-ros-base
+conda activate regrind_hw
+pip install -e "source/regrind[hardware]"
+
+# first run: --sim2real_offset X Y Z --save_setup stores the offset in <run_dir>/real/setup.yaml for later runs
+python scripts/real_world/deploy.py --hand {wuji,leap} --checkpoint <run_dir>/model_XXXX.pt --sim2real_offset X Y Z --save_setup
+```
+
+See [scripts/real_world/README.md](scripts/real_world/README.md) for the frame conventions, ROS topics and the arm/hand driver nodes.
